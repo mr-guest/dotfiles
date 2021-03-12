@@ -1,3 +1,9 @@
+;; Increases Garbage Collection During Startup
+(setq startup/gc-cons-threshold gc-cons-threshold)
+(setq gc-cons-threshold most-positive-fixnum)
+(defun startup/reset-gc () (setq gc-cons-threshold startup/gc-cons-threshold))
+(add-hook 'emacs-startup-hook 'startup/reset-gc)
+
 (setq inhibit-startup-message t)
 
 (scroll-bar-mode -1)        ; Disable visible scrollbar
@@ -30,12 +36,11 @@
 
 ;; Emacs Dasbhoard
 (use-package dashboard
-  :ensure t
   :defer nil
   :preface
   :config
   (dashboard-setup-startup-hook))
-  (setq dashboard-items '((recents . 5)))
+  (setq dashboard-items '((recents . 7)))
   (setq dashboard-banner-logo-title "Personal Emacs / mr.guest")
   (setq dashboard-startup-banner "~/.emacs.d/kokoron.png")
   (setq dashboard-center-content t)
@@ -58,21 +63,20 @@
  ;; Auto update package globally
 (use-package auto-package-update
   :defer nil
-  :ensure t
   :config
   (setq auto-package-update-delete-old-versions t)
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
 
-;; Using Package
+;; Using command-log
 (use-package command-log-mode)
 
-
+;; doom-modeline
 (use-package doom-modeline
-  :ensure t
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 10)))
 
+;; ivy - autocompletion
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
@@ -91,22 +95,45 @@
   :config
   (ivy-mode 1))
 
+;; detailed command
+(use-package ivy-rich
+  :init
+  (ivy-rich-mode 1))
+;; counsel the package u in
+(use-package counsel)
+
+;; Great complement with ivy might add projectile
 (use-package which-key
-  :ensure t
   :diminish which-key-mode
   :init
-  (which-key-mode))
+  (which-key-mode 1))
 
-;; Increases Garbage Collection During Startup
-(setq startup/gc-cons-threshold gc-cons-threshold)
-(setq gc-cons-threshold most-positive-fixnum)
-(defun startup/reset-gc () (setq gc-cons-threshold startup/gc-cons-threshold))
-(add-hook 'emacs-startup-hook 'startup/reset-gc)
+;; Minimap enabled
+(use-package minimap
+  :init
+  (minimap-mode 1))
 
 ;; Enable Line Numbers
-(add-hook 'prog-mode-hook' 'display-line-numbers-mode)
-(add-hook 'text-mode-hook' 'display-line-numbers-mode)
-(add-hook 'org-mode-hook' 'display-line-numbers-mode)
+(column-number-mode)
+(global-display-line-numbers-mode t)
+
+;; Disable line number for some modes
+(dolist (mode '(org-mode-hook
+		term-mode-hook
+		eshell-mode-hook))
+  (add-hook mode(lambda ()(display-line-numbers-mode 0))))
+
+;; Snippets for Snippets
+(use-package yasnippet
+  :init
+  (yas-global-mode 1))
+
+(use-package yasnippet-snippets)
+
+;; Evil Mode
+(use-package evil
+  :init
+  (evil-mode 1))
 
 ;; Enable copypasting outside of Emacs
 (setq x-select-enable-clipboard t)
@@ -114,17 +141,24 @@
 ;; Transform yes-or-no to y-or-n
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;;org-mode
+;; Collection of org-mode config
+
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
+
+;;end of init.el
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(minimap-mode t)
+ '(minimap-window-location 'right)
+ '(org-agenda-files '("~/Document/Seven.org"))
  '(package-selected-packages
-   '(which-key ivy doom-modeline command-log-mode auto-package-update doom-themes dashboard use-package)))
+   '(minimap all-the-icons-ivy-rich ivy-rich which-key ivy doom-modeline command-log-mode auto-package-update doom-themes dashboard use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
