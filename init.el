@@ -14,7 +14,9 @@
 (setq visible-bell t)       ; Set up the visible bell
 (set-face-attribute 'default nil :height 110) ; Changing font and height
 
-  
+;; adding sqlite
+(add-to-list 'exec-path "~/.emacs.d/sqlite")
+
 ;; Package Managing.
 ;; Initialize package sources
 (require 'package)
@@ -142,26 +144,29 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Collection of org-mode config
+(use-package org)
 
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 
-;;end of init.el
+;; org-roam
+(use-package org-roam
+      :hook
+      (after-init . org-roam-mode)
+      :custom
+      (org-roam-directory "~/Document/org/")
+      :bind (:map org-roam-mode-map
+              (("C-c n l" . org-roam)
+               ("C-c n f" . org-roam-find-file)
+               ("C-c n g" . org-roam-graph))
+              :map org-mode-map
+              (("C-c n i" . org-roam-insert))
+              (("C-c n I" . org-roam-insert-immediate))))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(minimap-mode t)
- '(minimap-window-location 'right)
- '(org-agenda-files '("~/Document/Seven.org"))
- '(package-selected-packages
-   '(minimap all-the-icons-ivy-rich ivy-rich which-key ivy doom-modeline command-log-mode auto-package-update doom-themes dashboard use-package)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; Faster update for org-roam
+(setq org-roam-db-update-method 'immediate)
+
+(setq custom-file (concat user-emacs-directory "custom.el"))
+;end of init.el
+
