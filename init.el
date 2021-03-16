@@ -32,6 +32,7 @@
 
 (use-package doom-themes
   :demand
+  :defer nil
   :config
   (load-theme 'doom-one t))
 
@@ -109,8 +110,6 @@
               :map org-mode-map
               (("C-c n i" . org-roam-insert))
               (("C-c n I" . org-roam-insert-immediate))))
-
-(setq org-roam-db-update-method 'immediate)
 
 (column-number-mode)
 (global-display-line-numbers-mode t)

@@ -13,3 +13,4 @@
 
 (add-to-list 'exec-path "~/.emacs.d/sqlite")
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(setq org-roam-db-update-method 'immediate)
