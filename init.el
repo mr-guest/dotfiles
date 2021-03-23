@@ -97,6 +97,14 @@
 (global-set-key "\C-cl" 'org-store-link)
 (global-set-key "\C-ca" 'org-agenda)
 
+(setq org-todo-keywords
+       '((sequence "TODO"
+		   "PROJ"
+		   "LOOP"
+		   "WAIT"
+		   "|"
+		   "DONE"
+		   "NA" )))
 ;; org-roam
 (use-package org-roam
       :hook
