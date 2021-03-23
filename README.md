@@ -1,9 +1,11 @@
-# For Personal Host ONLY
+# Personal Configuration
 
->why not locally ?
+Mostly for vim and emacs configuration
 
-i am not smart or doesnt know any other alternatives
+>What i(you) in for?
 
->why there's an init.el ?
+A messy uncommented configuration
 
-personal config for emacs , really messy by the way.
+>What are you urrently working on?
+
+Learning Pyton and SQL
