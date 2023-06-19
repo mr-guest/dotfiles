@@ -8,4 +8,4 @@ Mostly for vim and emacs configuration
 
 >What are you currently do right now?
 
-Learning Pyton and SQL
+Learning Python and C
